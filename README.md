@@ -70,12 +70,47 @@ Output (Restored)
 ![alt teks](input/test_image_lena_noisy.png)
 
 **After**:
- 
+
 ![alt teks](output/01_denoised_combined_15-6.0.png)
 
 #### 2. **Histogram Equalization** (File: `equalization.py`)
 
-**blum coba**
+**Tujuan**: Memperbaiki masalah low contrast
+
+**Teknik yang digunakan**:
+- **Histogram Equalization**
+  - Mendistribusikan intensitas secara merata dalam rentang 0-255 
+  - PMF -> CDF -> LUT
+- **CLAHE (Contrast Limited Adaptive Histogram Equalization)**
+  - Membagi citra ke dalam tile (8x8)
+  - Melakukan histogram equalization pada setiap tile secara terpisah
+  - Membatasi amplifikasi kontrast dengan clip_limit untuk menghindari over-amplification
+  
+**Alasan Pemilihan**:
+- CLAHE lebih baik dari global histogram equalization karena menghindari over-amplification
+- Menghindari area washing out (rata putih)
+- Mengurangi noise amplification
+
+**Algorithm**:
+```
+1. Untuk setiap tile:
+   a. Hitung histogram
+   b. Clip histogram dengan clip_limit
+   c. Hitung CDF (Cumulative Distribution Function)
+   d. Normalisasi CDF ke range 0-255
+   e. Map pixel values menggunakan CDF yang dinormalisasi
+```
+
+#### Perbandingan Visual Sebelum & Sesudah Denoising
+
+**Before**:
+
+![alt teks](output/01_denoised_combined_15-10.0.png)
+
+**After**:
+
+![alt teks](output/02_equalized_color_denoise_clahe_15-10.0.png)
+
 
 #### 3. **Sharpening** (File: `sharpening.py`)
 
