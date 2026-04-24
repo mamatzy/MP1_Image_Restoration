@@ -100,38 +100,37 @@ def main():
     
     # median filter
     # denoisedMedian10 = manualMedianFilter(noisyImg, kernelSize=10)
-    denoisedMedian15 = manualMedianFilter(noisyImg, kernelSize=15)
-    # denoisedMedian25 = manualMedianFilter(noisyImg, kernelSize=25)
+    # denoisedMedian15 = manualMedianFilter(noisyImg, kernelSize=15)
+    denoisedMedian25 = manualMedianFilter(noisyImg, kernelSize=25)
     print("median filter kelar")
     
     # gaussian filter
     # denoisedGaussian4 = manualGaussianFilter(noisyImg, kernelSize=25, sigmaSigmaBoy=4.0)
-    denoisedGaussian6 = manualGaussianFilter(noisyImg, kernelSize=25, sigmaSigmaBoy=6.0)
-    # denoisedGaussian10 = manualGaussianFilter(noisyImg, kernelSize=25, sigmaSigmaBoy=10.0)
+    # denoisedGaussian6 = manualGaussianFilter(noisyImg, kernelSize=25, sigmaSigmaBoy=6.0)
+    denoisedGaussian10 = manualGaussianFilter(noisyImg, kernelSize=25, sigmaSigmaBoy=10.0)
     # denoisedGaussian20 = manualGaussianFilter(noisyImg, kernelSize=25, sigmaSigmaBoy=20.0)
     print("gaussian filter kelar")
     
     # kombinasi hasil
-    denoised = cv2.addWeighted(denoisedMedian15, 0.5, denoisedGaussian6, 0.5, 0)
+    denoised = cv2.addWeighted(denoisedMedian25, 0.5, denoisedGaussian10, 0.5, 0)
     print("yahahaha kelar semua")
     
     # i show speed typeshii
     # cv2.imshow('Median Filter 10', denoisedMedian10)
-    cv2.imshow('Median Filter 15', denoisedMedian15)
+    cv2.imshow('Median Filter 25', denoisedMedian25)
     # cv2.imshow('Median Filter 25', denoisedMedian25)
     # cv2.imshow('Gaussian Filter 4.0', denoisedGaussian4)
-    cv2.imshow('Gaussian Filter 6.0', denoisedGaussian6)
+    cv2.imshow('Gaussian Filter 10.0', denoisedGaussian10)
     # cv2.imshow('Gaussian Filter 20.0', denoisedGaussian20)
     cv2.imshow('Combined', denoised)
     
     # simpan hasil
     # cv2.imwrite(f'{outputDir}/01_denoised_median_10.png', denoisedMedian10)
-    cv2.imwrite(f'{outputDir}/01_denoised_median_15.png', denoisedMedian15)
-    # cv2.imwrite(f'{outputDir}/01_denoised_median_25.png', denoisedMedian25)
+    cv2.imwrite(f'{outputDir}/01_denoised_median_25.png', denoisedMedian25)
     # cv2.imwrite(f'{outputDir}/01_denoised_gaussian_4.0.png', denoisedGaussian4)
-    cv2.imwrite(f'{outputDir}/01_denoised_gaussian_6.0.png', denoisedGaussian6)
+    cv2.imwrite(f'{outputDir}/01_denoised_gaussian_10.0.png', denoisedGaussian10)
     # cv2.imwrite(f'{outputDir}/01_denoised_gaussian_20.0.png', denoisedGaussian20)
-    cv2.imwrite(f'{outputDir}/01_denoised_combined_15-6.0.png', denoised)
+    cv2.imwrite(f'{outputDir}/01_denoised_combined_25-10.0.png', denoised)
     
     cv2.waitKey(0)
     cv2.destroyAllWindows()
