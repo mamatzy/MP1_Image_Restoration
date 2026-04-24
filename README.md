@@ -21,7 +21,7 @@ Citra di folder input mengalami kerusakan berupa:
 
 ## Metode Penyelesaian
 
-### Diagram Alur
+### Diagram Alur (pipeline)
 ```
 Input (Noisy & Blurred)
          ↓
@@ -62,6 +62,16 @@ Output (Restored)
 - Median filter untuk menghilangkan salt-and-pepper noise
 - Gaussian filter untuk menghilangkan Gaussian noise 
 - Kombinasi kedua filter memberikan hasil yang lebih baik 
+
+#### Perbandingan Visual Sebelum & Sesudah Denoising
+
+**Before**:
+
+![alt teks](input/test_image_lena_noisy.png)
+
+**After**:
+ 
+![alt teks](output/01_denoised_combined_15-6.0.png)
 
 #### 2. **Histogram Equalization** (File: `equalization.py`)
 
