@@ -109,12 +109,31 @@ Output (Restored)
 
 **After**:
 
-![alt teks](output/02_equalized_color_denoise_clahe_15-10.0.png)
+![alt teks](output/02_equalized_color_denoise_clahejadijadianpakeLAB_bilinear_15-10.0.png)
 
 
 #### 3. **Sharpening** (File: `sharpening.py`)
 
-**blum coba**
+**Tujuan**: Mempertajam gambar yang kabur dari denoising
+
+**Teknik yang digunakan**:
+- **Unsharp Masking dengan mask Laplacian**
+  - Citra asli masih buram 
+  - Masking tepi (Asli - Blur) menggunakan kernel Laplacian
+  - Hasil akhir (Asli + Masking)
+
+---
+
+
+#### Perbandingan Visual Sebelum & Sesudah Denoising
+
+**Before**:
+
+![alt teks](output/02_equalized_color_denoise_clahejadijadianpakeLAB_bilinear_15-10.0.png)
+
+**After**:
+
+![alt teks](output/03_sharpened_laplacian_denoisedlu_3-6.0.png)
 
 ---
 
@@ -171,7 +190,7 @@ python sharpening.py
 ---
 
 ## Hasil dan Analisis
-**pokoke denoising sukses**
+**pokoke denoising + equalizing DONEEE HAHAYYY tapi sharpening masih gaje**
 
 **Status**: on progress
 **Last Updated**: 24 April 2026
