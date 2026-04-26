@@ -1,75 +1,42 @@
 import cv2 
 import numpy as np
+from denoising import manualMedianFilter, manualGaussianFilter
+from equalization import apply_clahe_color
+from sharpening import unsharpMasking
 
-img = cv2.imread("input/test_image_lena_noisy.png")
+def main():
+    imagePath = "input/test_image_lena_noisy.png"
+    outputDir = "output"
 
-def GaussianKernel(size, sigma):
-    ax = np.linspace(-(size - 1) / 2., (size - 1) / 2., size)
+    noisyImg = cv2.imread(imagePath)
+    if noisyImg is None:
+        print("gagal memuat gambar")
+        return
     
-    x, y = np.meshgrid(ax, ax)
+    denoisedmedian15 = manualMedianFilter(noisyImg, 15)
+    denoisedGaussian10 = manualGaussianFilter(noisyImg, 25, 10.0)
+    denoised = cv2.addWeighted(denoisedmedian15, 0.5, denoisedGaussian10, 0.5, 0)
+    cv2.imwrite(f"{outputDir}/01_denoised.png", denoised)
     
-    # rumus gaussian formula
-    kernel = np.exp(-0.5 * (np.square(x) + np.square(y)) / np.square(sigma))
+
+    #CLAHE pake LAB color space
+    lab = cv2.cvtColor(denoised, cv2.COLOR_BGR2LAB)
+    l, a, b = cv2.split(lab)
     
-    return kernel / np.sum(kernel)
-
-def ManualConvolution(image, kernel):
-    h, w,  = image.shape[:2]
-    kernel_h, kernel_w = kernel.shape
+    l_clahe = apply_clahe_color(l, grid_size=(8, 8))
+    a_clahe = apply_clahe_color(a, grid_size=(8, 8))
+    b_clahe = apply_clahe_color(b, grid_size=(8, 8))
     
-    pad_h = kernel_h // 2
-    pad_w = kernel_w // 2
-
-    output = np.zeros_like(image, dtype=np.float32)
-
-    padded = np.pad(image, ((pad_h, pad_h), (pad_w, pad_w)), mode='reflect')
-
-    for i in range(h):
-        for j in range(w):
-            window = padded[i : i + kernel_h, j : j + kernel_w]
-            
-            output[i, j] = np.sum(window * kernel)
-            
-    return np.clip(output, 0, 255).astype(np.uint8)
-
-
-# print (GaussianKernel(5, 1.0))
-
-while True:
-
-    kernel_tulis_sendiri = np.array([
-        [1, 2, 1],
-        [2, 4, 2],
-        [1, 2, 1]
-    ], dtype=np.float32) / 16
-
-    ## abu abu
-
-    # img_gaussian = ManualConvolution(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), GaussianKernel(51, 8.0))
-    # img_gaussian2 = ManualConvolution(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), kernel_tulis_sendiri)
-
-
-    # cv2.imshow("Original Image", img)
-    # cv2.imshow("Gaussian Noise Image", img_gaussian)
-    # cv2.imshow("Gaussian Noise Image 2", img_gaussian2)
-
-
-    ## warna
-
-    b, g, r = cv2.split(img)
-
-    b_blur = ManualConvolution(b, GaussianKernel(51, 8.0))
-    g_blur = ManualConvolution(g, GaussianKernel(51, 8.0))
-    r_blur = ManualConvolution(r, GaussianKernel(51, 8.0))
-
-    img_gaussian_color = cv2.merge((b_blur, g_blur, r_blur))
-
-    cv2.imshow("Original Image", img)
-    cv2.imshow("Gaussian Noise Image", img_gaussian_color)
-
+    result_lab = cv2.merge([l_clahe, a_clahe, b_clahe])
+    equalized = cv2.cvtColor(result_lab, cv2.COLOR_LAB2BGR)
+    cv2.imwrite(f"{outputDir}/02_equalized.png", equalized)
 
     
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
-
-cv2.destroyAllWindows()
+    sharpened = unsharpMasking(equalized, 25, 10.0, 2.5)
+    cv2.imwrite(f"{outputDir}/03_sharpened.png", sharpened)
+    
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+    
+if __name__ == "__main__":
+    main()
