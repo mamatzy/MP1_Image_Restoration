@@ -71,7 +71,7 @@ Output (Restored)
 
 **After**:
 
-![alt teks](output/01_denoised_combined_15-6.0.png)
+![alt teks](output/01_denoised.png)
 
 #### 2. **Histogram Equalization** (File: `equalization.py`)
 
@@ -105,11 +105,11 @@ Output (Restored)
 
 **Before**:
 
-![alt teks](output/01_denoised_combined_15-10.0.png)
+![alt teks](output/01_denoised.png)
 
 **After**:
 
-![alt teks](output/02_equalized_color_denoise_clahejadijadianpakeLAB_bilinear_15-10.0.png)
+![alt teks](output/02_equalized.png)
 
 
 #### 3. **Sharpening** (File: `sharpening.py`)
@@ -129,11 +129,11 @@ Output (Restored)
 
 **Before**:
 
-![alt teks](output/02_equalized_color_denoise_clahejadijadianpakeLAB_bilinear_15-10.0.png)
+![alt teks](output/02_equalized.png)
 
 **After**:
 
-![alt teks](output/03_sharpened_laplacian_denoisedlu_3-6.0.png)
+![alt teks](output/03_sharpened.png)
 
 ---
 
@@ -151,9 +151,9 @@ MP1_Image_Restoration/
 │   └── test_image_lena_ori.png           # Reference original
 └── output/
     ├── lena_restored.png                 # Final restored image
-    ├── 01_denoising.png                  # Denoising comparison
-    ├── 02_histogram_equalization.png     # Histogram comparison
-    └── 03_sharpening.png                 # Sharpening comparison
+    ├── 01_denoised.png                   # Denoising comparison
+    ├── 02_equalized.png                  # Histogram comparison
+    └── 03_sharpened.png                  # Sharpening comparison
 ```
 
 ---
@@ -190,9 +190,9 @@ python sharpening.py
 ---
 
 ## Hasil dan Analisis
-**pokoke denoising + equalizing DONEEE HAHAYYY tapi sharpening masih gaje**
+**Hasilnya meskipun tidak sebagus test_image_lena_ori.jpg, setidaknya bisa mendekati**
 
-**Status**: on progress
-**Last Updated**: 24 April 2026
+**Status**: **COMPLETED**
+**Last Updated**: 26 April 2026
 
 
