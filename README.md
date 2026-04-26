@@ -190,7 +190,18 @@ python sharpening.py
 ---
 
 ## Hasil dan Analisis
-**Hasilnya meskipun tidak sebagus test_image_lena_ori.jpg, setidaknya bisa mendekati**
+1. Analisis Proses Penghilangan Noise 
+Untuk menghilangkan noise salt&pepper dan gaussian noise, saya menggunakan median & gaussian filter yang menggabungkannya dengan bobot 50:50. Dan untuk mencari hasil yang terbaik saya membuat variasi dari kernel size median filter dan sigma gaussian filter yang kemudian didapat nilai idealnya yaitu 15 dan 10.0. Nilai tersebut saya ambil karena kalau nilainya kebesaran akan terlalu blur dan menghilangkan fitur detailnya, dan kalau nilainya terlalu rendah ada beberapa noise yang tidak terfilter. Tapi sepertinya tahap ini yang menjadikan hasilnya tidak sebagus seperti yang diharapkan.
+
+2. Analisis Proses Equalization
+Sebelumnya saya menggunakan histogram equalization saja dan seperti teori di ppt katakan, ada daerah washout atau keterangan. Jadi saya coba menggunakan CLAHE dari cv2 dan hasilnya jauh lebih baik. Kemudian saya coba bikin fungsi CLAHE manual incase dosen saya tidak membolehkannya. Dan didapat gambar hasilnya terlihat terpotong-potong karena tiap grid tidak saya jembatani. Mengatasi hal itu saya menggunakan interpolasi bilinear untuk nilai luts nya. Dan didapat hasilnya sama persis dengan CLAHE dari cv2 asli (geloo gw jago bet). Dan saya sebelumnya menerapkan clahe di sumbu Lightness dari LAB, dan di kode gabungan (restoration.py) saya coba menerapkannya di ketiga sumbu L, A dan B. Dan hasilnya warnanya sangat mendekati dengan gambar yang diharapkan.
+
+3. Analisis Proses Sharpening
+Saya mencoba untuk menggunakan dua metode yaitu pakai edge detection dari Laplacian dan unsharp masking. Karena hasil dari Laplacian kelihatannya rusak karena beberapa gaussian noise masih ada, dan mengurangi noisenya tanpa meniadakan fitur juga sulit jadi saya menyerah akan metode ini. Untungnya metode unsharp masking sangat mudah yaitu blur gaussian seperti di denoising dan mencari mask nya dari image-blur lalu hasilnya berupa image + k * mask. Dan hasilnya sangat bagus jadi saya gaskan aja.
+
+4. Analisis Keseluruhan
+Hasilnya cukup mendekati dari segi saturasi dan warna yang membuktikan proses Equalization sukses. Namun fitur dan detail wajah dan bulu yang membutuhkan detail besar menjadi hilang karena proses denoising. Proses sharpening juga cukup bagus karena efek blur menghilang. 
+
 
 **Status**: **COMPLETED**
 **Last Updated**: 26 April 2026
