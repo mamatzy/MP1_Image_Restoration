@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from denoising import plot_histogram
 
 def histogramEqualization(image, clip_limit=0.01):
 
@@ -98,11 +99,14 @@ def main():
         print("gagal memuat gambar")
         return
     
-    # histogram equalization & clahe untuk abu abu
+    plot_histogram(noisyImg, "Input Denoised Image Histogram", f"{outputDir}/02_histogram_input.png")
+    
     gray = cv2.cvtColor(noisyImg, cv2.COLOR_BGR2GRAY)
     imEq = histogramEqualization(gray)
+    plot_histogram(imEq, "Grayscale Equalized Histogram", f"{outputDir}/02_histogram_grayscale_eq.png")
 
     clahe_gray = apply_clahe_color(gray, grid_size=(8, 8))
+    plot_histogram(clahe_gray, "Grayscale CLAHE Histogram", f"{outputDir}/02_histogram_grayscale_clahe.png")
     
     # histogram equalization & clahe per channel untuk color 
     b, g, r = cv2.split(noisyImg)
@@ -110,6 +114,8 @@ def main():
     g_eq = histogramEqualization(g)
     r_eq = histogramEqualization(r)
     imEqColor = cv2.merge((b_eq, g_eq, r_eq))
+    plot_histogram(imEqColor, "Color Equalized Histogram", f"{outputDir}/02_histogram_color_eq.png")
+    cv2.imwrite(f'{outputDir}/02_equalized_color_denoise.png', imEqColor)
 
     b_cl = apply_clahe_color(b, grid_size=(8, 8))
     g_cl = apply_clahe_color(g, grid_size=(8, 8))
@@ -126,6 +132,7 @@ def main():
     # Gabung kembali
     result_lab = cv2.merge((l_clahe, a, b))
     imEqColor_CLAHE = cv2.cvtColor(result_lab, cv2.COLOR_LAB2BGR)
+    plot_histogram(imEqColor_CLAHE, "Color CLAHE LAB Histogram", f"{outputDir}/02_histogram_color_clahe_lab.png")
     
     # # tampilkan hasil
     # cv2.imshow('Input', noisyImg)

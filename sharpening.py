@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-from denoising import  manualGaussianFilter
+from denoising import manualGaussianFilter, plot_histogram
 
 
 def manualLaplacianEdge(image):
@@ -70,19 +70,21 @@ def main():
         print("gagal memuat gambar")
         return
     
-    ## pake laplacian sharpening
+    plot_histogram(denoisedImg, "Input Before Sharpening Histogram", f"{outputDir}/03_histogram_before_sharpening.png")
+    
     sharpenedEdge = edgeDetectionSharpening(denoisedImg, strength=1.0)
     print("edge detection sharpening kelar")
+    plot_histogram(sharpenedEdge, "Sharpened Edge Detection Histogram", f"{outputDir}/03_histogram_sharpened_edge.png")
+    cv2.imwrite(f'{outputDir}/03_sharpened_laplacian.png', sharpenedEdge)
     
-    ## pake true unsharp masking
     sharpenedUnsharp = unsharpMasking(denoisedImg, kernelSize=25, sigmaSigmaBoy=10.0, strength=2.5)
     print("unsharp masking kelar")
+    plot_histogram(sharpenedUnsharp, "Sharpened Unsharp Masking Histogram", f"{outputDir}/03_histogram_sharpened_unsharp.png")
 
     cv2.imshow('Edge Detection', sharpenedEdge)
     cv2.imshow('Unsharp Masking', sharpenedUnsharp)
     
-    # cv2.imwrite(f'{outputDir}/03_sharpened_laplacian_denoisedlu_3-1.0.png', sharpenedEdge)
-    cv2.imwrite(f'{outputDir}/03_sharpened_unsharp_clahedlu_15-2.5.png', sharpenedUnsharp)
+    cv2.imwrite(f'{outputDir}/03_sharpened_unsharp.png', sharpenedUnsharp)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()

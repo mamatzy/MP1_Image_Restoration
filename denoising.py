@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 def manualMedianFilter(image, kernelSize):
@@ -88,6 +89,28 @@ def manualGaussianFilter(image, kernelSize, sigmaSigmaBoy):
     return np.clip(output, 0, 255).astype(np.uint8)
 
 
+def plot_histogram(image, title, save_path=None):
+    if len(image.shape) == 3:
+        colors = ('b', 'g', 'r')
+        fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+        for i, color in enumerate(colors):
+            hist = cv2.calcHist([image], [i], None, [256], [0, 256])
+            axes[i].plot(hist, color=color)
+            axes[i].set_title(f'{title} - Channel {color.upper()}')
+            axes[i].set_xlim([0, 256])
+        plt.tight_layout()
+    else:
+        hist = cv2.calcHist([image], [0], None, [256], [0, 256])
+        plt.figure(figsize=(10, 4))
+        plt.plot(hist, color='black')
+        plt.title(title)
+        plt.xlim([0, 256])
+    
+    if save_path:
+        plt.savefig(save_path)
+    plt.show()
+    plt.close()
+
 def main():
     imagePath = "input/test_image_lena_noisy.png"
     outputDir = "output"
@@ -97,6 +120,22 @@ def main():
         print("gagal ngambi gambar")
         return
     
+    plot_histogram(noisyImg, "Input Noisy Image Histogram", f"{outputDir}/00_histogram_noisy.png")
+    
+    denoisedMedian = manualMedianFilter(noisyImg, 15)
+    cv2.imwrite(f"{outputDir}/01_denoised_median.png", denoisedMedian)
+    plot_histogram(denoisedMedian, "Denoised Median Filter Histogram", f"{outputDir}/01_histogram_denoised_median.png")
+    
+    denoisedGaussian = manualGaussianFilter(noisyImg, 25, 10.0)
+    cv2.imwrite(f"{outputDir}/01_denoised_gaussian.png", denoisedGaussian)
+    plot_histogram(denoisedGaussian, "Denoised Gaussian Filter Histogram", f"{outputDir}/01_histogram_denoised_gaussian.png")
+    
+    denoised = cv2.addWeighted(denoisedMedian, 0.5, denoisedGaussian, 0.5, 0)
+    cv2.imwrite(f"{outputDir}/01_denoised_combined.png", denoised)
+    plot_histogram(denoised, "Denoised Combined Histogram", f"{outputDir}/01_histogram_denoised_combined.png")
+    
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     
     # median filter
     # denoisedMedian10 = manualMedianFilter(noisyImg, kernelSize=10)
