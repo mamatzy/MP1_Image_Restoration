@@ -67,11 +67,16 @@ Output (Restored)
 
 **Before**:
 
-![alt teks](input/test_image_lena_noisy.png)
+![Input Noisy Image](input/test_image_lena_noisy.png)
+
+![Histogram Input](output/00_histogram_noisy.png)
 
 **After**:
 
-![alt teks](output/01_denoised.png)
+![Denoised Image](output/01_denoised.png)
+
+![Histogram Denoised](output/02_histogram_input.png)
+![Histogram Denoised](output/02_histogram_grayscale_eq.png)
 
 #### 2. **Histogram Equalization** (File: `equalization.py`)
 
@@ -101,15 +106,20 @@ Output (Restored)
    e. Map pixel values menggunakan CDF yang dinormalisasi
 ```
 
-#### Perbandingan Visual Sebelum & Sesudah Denoising
+#### Perbandingan Visual Sebelum & Sesudah Equalization
 
 **Before**:
 
-![alt teks](output/01_denoised.png)
+![Denoised Image](output/01_denoised.png)
+
+![Histogram Denoised](output/02_histogram_input.png)
+![Histogram Denoised](output/02_histogram_grayscale_eq.png)
 
 **After**:
 
-![alt teks](output/02_equalized.png)
+![Equalized Image](output/02_equalized.png)
+
+![Histogram Equalized](output/03_histogram_before_sharpening.png)
 
 
 #### 3. **Sharpening** (File: `sharpening.py`)
@@ -129,11 +139,13 @@ Output (Restored)
 
 **Before**:
 
-![alt teks](output/02_equalized.png)
+![Equalized Image](output/02_equalized.png)
 
 **After**:
 
-![alt teks](output/03_sharpened.png)
+![Sharpened Image](output/03_sharpened.png)
+
+![Histogram Sharpened](output/03_histogram_sharpened.png)
 
 ---
 
@@ -150,10 +162,13 @@ MP1_Image_Restoration/
 │   ├── test_image_lena_noisy.png         # Input citra rusak
 │   └── test_image_lena_ori.png           # Reference original
 └── output/
-    ├── lena_restored.png                 # Final restored image
-    ├── 01_denoised.png                   # Denoising comparison
-    ├── 02_equalized.png                  # Histogram comparison
-    └── 03_sharpened.png                  # Sharpening comparison
+    ├── 00_histogram_input.png                   # Histogram gambar input
+    ├── 01_denoised.png                         # Denoised image
+    ├── 01_histogram_denoised.png               # Histogram denoised image
+    ├── 02_equalized.png                        # Equalized image
+    ├── 02_histogram_equalized.png              # Histogram equalized image
+    ├── 03_sharpened.png                        # Sharpened image
+    └── 03_histogram_sharpened.png              # Histogram sharpened image
 ```
 
 ---
@@ -173,19 +188,89 @@ python restoration.py
 Output:
 - Menampilkan progress information di console
 - Generate visualization dengan histogram comparison
-- Save hasil ke `output/lena_restored.png`
+- Save hasil ke `output/` dengan histogram di setiap tahap
+- Histogram ditampilkan untuk input, denoised, equalized, dan sharpened images
+- File histogram tersimpan dengan format PNG di folder output
 
 ### Run Individual Modules
 ```bash
 # Run hanya denoising
 python denoising.py
+```
+Output:
+- Tampilkan histogram untuk input noisy image
+- Tampilkan histogram untuk denoised median filter
+- Tampilkan histogram untuk denoised gaussian filter
+- Tampilkan histogram untuk combined denoised image
+- Simpan semua histogram dan image hasil ke folder output
 
-# Run hanya histogram equalization
+```bash
 python equalization.py
+```
+Output:
+- Tampilkan histogram untuk input denoised image
+- Tampilkan histogram untuk grayscale equalized
+- Tampilkan histogram untuk grayscale CLAHE
+- Tampilkan histogram untuk color equalized
+- Tampilkan histogram untuk color CLAHE LAB
+- Simpan semua histogram dan image hasil ke folder output
 
-# Run hanya sharpening
+```bash
 python sharpening.py
 ```
+Output:
+- Tampilkan histogram untuk image sebelum sharpening
+- Tampilkan histogram untuk edge detection sharpened
+- Tampilkan histogram untuk unsharp masking sharpened
+- Simpan semua histogram dan image hasil ke folder output
+```
+
+---
+
+## Galeri Histogram Lengkap
+
+### Denoising Module (denoising.py)
+
+**Histogram Input Noisy**:
+![Histogram Noisy Input](output/00_histogram_noisy.png)
+
+**Histogram Denoised Median Filter**:
+![Histogram Denoised Median](output/01_histogram_denoised_median.png)
+
+**Histogram Denoised Gaussian Filter**:
+![Histogram Denoised Gaussian](output/01_histogram_denoised_gaussian.png)
+
+**Histogram Denoised Combined**:
+![Histogram Denoised Combined](output/01_histogram_denoised_combined.png)
+
+---
+
+### Equalization Module (equalization.py)
+
+**Histogram Grayscale Equalized**:
+![Histogram Grayscale Equalized](output/02_histogram_grayscale_eq.png)
+
+**Histogram Grayscale CLAHE**:
+![Histogram Grayscale CLAHE](output/02_histogram_grayscale_clahe.png)
+
+**Histogram Color Equalized**:
+![Histogram Color Equalized](output/02_histogram_color_eq.png)
+
+**Histogram Color CLAHE LAB**:
+![Histogram Color CLAHE LAB](output/02_histogram_color_clahe_lab.png)
+
+---
+
+### Sharpening Module (sharpening.py)
+
+**Histogram Before Sharpening**:
+![Histogram Before Sharpening](output/03_histogram_before_sharpening.png)
+
+**Histogram Sharpened Edge Detection**:
+![Histogram Sharpened Edge](output/03_histogram_sharpened_edge.png)
+
+**Histogram Sharpened Unsharp Masking**:
+![Histogram Sharpened Unsharp](output/03_histogram_sharpened_unsharp.png)
 
 ---
 
