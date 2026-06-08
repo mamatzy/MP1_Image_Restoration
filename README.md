@@ -223,7 +223,7 @@ Output:
 - Tampilkan histogram untuk edge detection sharpened
 - Tampilkan histogram untuk unsharp masking sharpened
 - Simpan semua histogram dan image hasil ke folder output
-```
+
 
 ---
 
